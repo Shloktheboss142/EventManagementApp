@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (passwordInput.equals(confirmPasswordInput) && !passwordInput.isEmpty() && !usernameInput.isEmpty()) {
             saveDataToSharedPreference(usernameInput, passwordInput);
+            Intent intent = new Intent(this, UserLogin.class);
+            startActivity(intent);
         } else {
             Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show();
         }
