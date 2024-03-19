@@ -8,7 +8,7 @@
     tools:context=".UserLogin">
 
     <EditText
-        android:id="@+id/usernameInput"
+        android:id="@+id/eventId"
         android:layout_width="0dp"
         android:layout_height="44dp"
         android:layout_marginTop="8dp"
@@ -36,7 +36,7 @@
         android:layout_marginTop="24dp"
         android:text="Password"
         app:layout_constraintStart_toStartOf="@+id/guideline13"
-        app:layout_constraintTop_toBottomOf="@+id/usernameInput" />
+        app:layout_constraintTop_toBottomOf="@+id/eventId" />
 
     <TextView
         android:id="@+id/textView4"
@@ -49,7 +49,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline12" />
 
     <Button
-        android:id="@+id/loginButton"
+        android:id="@+id/saveCategoryButton"
         android:layout_width="0dp"
         android:layout_height="47dp"
         android:layout_marginLeft="10dp"
@@ -67,7 +67,7 @@
         android:layout_marginRight="10dp"
         android:onClick="onClickRegister"
         android:text="Register"
-        app:layout_constraintEnd_toStartOf="@+id/loginButton"
+        app:layout_constraintEnd_toStartOf="@+id/saveCategoryButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/guideline13"
         app:layout_constraintTop_toTopOf="@+id/guideline15" />
