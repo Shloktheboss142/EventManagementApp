@@ -58,6 +58,8 @@ public class UserLogin extends AppCompatActivity {
 
         if (usernameInput.equals(savedUsername) && passwordInput.equals(savedPassword)) {
             Toast.makeText(this, "Login Successfully", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, Dashboard.class);
+            startActivity(intent);
         } else {
             Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show();
         }
