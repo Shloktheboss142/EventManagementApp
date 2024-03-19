@@ -75,13 +75,13 @@
         android:text="Username"
         android:textAlignment="center"
         android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/eventId"
+        app:layout_constraintEnd_toStartOf="@+id/cCategoryIdInput"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/guideline6"
         app:layout_constraintTop_toTopOf="@+id/guideline8" />
 
     <EditText
-        android:id="@+id/eventId"
+        android:id="@+id/cCategoryIdInput"
         android:layout_width="0dp"
         android:layout_height="46dp"
         android:layout_marginLeft="40dp"
