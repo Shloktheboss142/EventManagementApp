@@ -1,8 +1,6 @@
 package com.fit2081.assignment1;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,29 +8,17 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class Dashboard extends AppCompatActivity {
+public class NewEvent extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_dashboard);
+        setContentView(R.layout.activity_new_event);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-    }
-
-    public void onClickNewEventCategory(View view) {
-        Intent intent = new Intent(this, NewEventCategory.class);
-
-        startActivity(intent);
-    }
-
-    public void onClickNewEvent(View view) {
-        Intent intent = new Intent(this, NewEvent.class);
-
-        startActivity(intent);
     }
 }
