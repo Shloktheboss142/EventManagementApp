@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -31,7 +29,7 @@ public class UserLogin extends AppCompatActivity {
             return insets;
         });
 
-        etUsernameInput = findViewById(R.id.usernameInput);
+        etUsernameInput = findViewById(R.id.eventId);
         etPasswordInput = findViewById(R.id.passwordInput);
 
         SharedPreferences sharedPreferences = getSharedPreferences(KeyStore.FILE_NAME, MODE_PRIVATE);

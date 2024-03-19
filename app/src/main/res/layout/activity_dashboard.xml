@@ -51,6 +51,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
+        android:onClick="onClickNewEventCategory"
         android:text="New Event Category"
         app:layout_constraintBottom_toTopOf="@+id/addEvent"
         app:layout_constraintEnd_toStartOf="@+id/guideline18"
