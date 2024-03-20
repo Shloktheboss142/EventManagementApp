@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     tools:context=".MainActivity">
 
     <TextView
@@ -75,13 +76,13 @@
         android:text="Username"
         android:textAlignment="center"
         android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/loginUsernameInput"
+        app:layout_constraintEnd_toStartOf="@+id/registerUsernameInput"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/guideline6"
         app:layout_constraintTop_toTopOf="@+id/guideline8" />
 
     <EditText
-        android:id="@+id/loginUsernameInput"
+        android:id="@+id/registerUsernameInput"
         android:layout_width="0dp"
         android:layout_height="46dp"
         android:layout_marginLeft="40dp"
@@ -97,8 +98,11 @@
         android:layout_width="160dp"
         android:layout_height="47dp"
         android:layout_marginTop="24dp"
+        android:backgroundTint="#2A2A2A"
         android:onClick="onClickRegister"
         android:text="Register"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/saveCategoryButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -109,8 +113,11 @@
         android:layout_width="160dp"
         android:layout_height="47dp"
         android:layout_marginTop="24dp"
+        android:backgroundTint="#FFFFFF"
         android:onClick="onClickLogin"
         android:text="Login"
+        android:textColor="#000000"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/registerButton"

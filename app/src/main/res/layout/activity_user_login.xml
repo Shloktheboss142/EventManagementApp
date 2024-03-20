@@ -5,10 +5,11 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     tools:context=".UserLogin">
 
     <EditText
-        android:id="@+id/loginUsernameInput"
+        android:id="@+id/registerUsernameInput"
         android:layout_width="0dp"
         android:layout_height="44dp"
         android:layout_marginTop="8dp"
@@ -36,7 +37,7 @@
         android:layout_marginTop="24dp"
         android:text="Password"
         app:layout_constraintStart_toStartOf="@+id/guideline13"
-        app:layout_constraintTop_toBottomOf="@+id/loginUsernameInput" />
+        app:layout_constraintTop_toBottomOf="@+id/registerUsernameInput" />
 
     <TextView
         android:id="@+id/textView4"
@@ -53,8 +54,10 @@
         android:layout_width="0dp"
         android:layout_height="47dp"
         android:layout_marginLeft="10dp"
+        android:backgroundTint="#2A2A2A"
         android:onClick="onClickLogin"
         android:text="Login"
+        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/guideline14"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/registerButton"
@@ -65,8 +68,11 @@
         android:layout_width="0dp"
         android:layout_height="47dp"
         android:layout_marginRight="10dp"
+        android:backgroundTint="#FFFFFF"
         android:onClick="onClickRegister"
         android:text="Register"
+        android:textColor="#000000"
+        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/saveCategoryButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/guideline13"

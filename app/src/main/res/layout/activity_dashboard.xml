@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     tools:context=".Dashboard">
 
     <TextView
@@ -51,8 +52,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
+        android:backgroundTint="#2A2A2A"
         android:onClick="onClickNewEventCategory"
         android:text="New Event Category"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/addEvent"
         app:layout_constraintEnd_toStartOf="@+id/guideline18"
         app:layout_constraintStart_toStartOf="@+id/guideline17"
@@ -64,8 +67,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:backgroundTint="#FFFFFF"
         android:onClick="onClickNewEvent"
         android:text="Add Event"
+        android:textColor="#000000"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/guideline19"
         app:layout_constraintEnd_toStartOf="@+id/guideline18"
         app:layout_constraintStart_toStartOf="@+id/guideline17"

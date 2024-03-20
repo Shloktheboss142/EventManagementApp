@@ -29,7 +29,7 @@ public class UserLogin extends AppCompatActivity {
             return insets;
         });
 
-        etUsernameInput = findViewById(R.id.loginUsernameInput);
+        etUsernameInput = findViewById(R.id.registerUsernameInput);
         etPasswordInput = findViewById(R.id.passwordInput);
 
         SharedPreferences sharedPreferences = getSharedPreferences(KeyStore.FILE_NAME, MODE_PRIVATE);
