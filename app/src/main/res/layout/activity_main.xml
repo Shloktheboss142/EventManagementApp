@@ -49,7 +49,7 @@
         app:layout_constraintGuide_end="24dp" />
 
     <EditText
-        android:id="@+id/cCategoryIdInput"
+        android:id="@+id/registerUsernameInput"
         android:layout_width="0dp"
         android:layout_height="44dp"
         android:layout_marginTop="8dp"
@@ -67,7 +67,7 @@
         android:layout_marginTop="24dp"
         android:text="Password"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/cCategoryIdInput" />
+        app:layout_constraintTop_toBottomOf="@+id/registerUsernameInput" />
 
     <EditText
         android:id="@+id/passwordInput"

@@ -29,7 +29,7 @@ public class UserLogin extends AppCompatActivity {
             return insets;
         });
 
-        etUsernameInput = findViewById(R.id.cCategoryIdInput);
+        etUsernameInput = findViewById(R.id.loginUsernameInput);
         etPasswordInput = findViewById(R.id.passwordInput);
 
         SharedPreferences sharedPreferences = getSharedPreferences(KeyStore.FILE_NAME, MODE_PRIVATE);
@@ -54,7 +54,7 @@ public class UserLogin extends AppCompatActivity {
         String savedUsername = sharedPreferences.getString(KeyStore.USERNAME, "");
         String savedPassword = sharedPreferences.getString(KeyStore.PASSWORD, "");
 
-        if (usernameInput.equals(savedUsername) && passwordInput.equals(savedPassword)) {
+        if (usernameInput.equals(savedUsername) && passwordInput.equals(savedPassword) && !savedUsername.isEmpty()) {
             Toast.makeText(this, "Login Successfully", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, Dashboard.class);
             startActivity(intent);
