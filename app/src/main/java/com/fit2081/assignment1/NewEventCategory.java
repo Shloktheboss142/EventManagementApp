@@ -1,6 +1,7 @@
 package com.fit2081.assignment1;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -21,14 +22,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.util.Arrays;
 import java.util.Random;
 
 public class NewEventCategory extends AppCompatActivity {
 
-    EditText etCateegoryId;
+    EditText etCategoryId;
     EditText etCategoryNameInput;
     EditText etEventCountInput;
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
     Switch etIsActiveInput;
 
     @Override
@@ -45,10 +46,11 @@ public class NewEventCategory extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.SEND_SMS, android.Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS}, 0);
         registerReceiver(new SMSReceiver(),new IntentFilter("android.provider.Telephony.SMS_RECEIVED"), RECEIVER_EXPORTED);
 
-        etCateegoryId = findViewById(R.id.cCategoryId);
+        etCategoryId = findViewById(R.id.cCategoryId);
         etCategoryNameInput = findViewById(R.id.cCategoryNameInput);
         etEventCountInput = findViewById(R.id.cEventCountInput);
         etIsActiveInput = findViewById(R.id.cIsActiveInput);
+
     }
 
     class SMSReceiver extends BroadcastReceiver {
@@ -109,16 +111,16 @@ public class NewEventCategory extends AppCompatActivity {
                     if (check) {
                         String categoryId = generateCategoryId();
 
-                        etCateegoryId.setText(categoryId);
+                        etCategoryId.setText(categoryId);
 
                         etCategoryNameInput.setText(categoryName);
 
                         if (eventCountInt != -1) {
                             etEventCountInput.setText(String.valueOf(eventCountInt));
-                            saveDataToSharedPreference(categoryId, categoryName, String.valueOf(eventCountInt), String.valueOf(isActiveBool));
+//                            saveDataToSharedPreference(categoryId, categoryName, String.valueOf(eventCountInt), String.valueOf(isActiveBool));
                         } else {
                             etEventCountInput.setText("");
-                            saveDataToSharedPreference(categoryId, categoryName, "", String.valueOf(isActiveBool));
+//                            saveDataToSharedPreference(categoryId, categoryName, "", String.valueOf(isActiveBool));
                         }
 
                         etIsActiveInput.setChecked(isActiveBool);
@@ -128,11 +130,9 @@ public class NewEventCategory extends AppCompatActivity {
                     }
 
                 }else {
-                    check = false;
                     Toast.makeText(context, "Unknown or invalid command", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                check = false;
                 Toast.makeText(context, "Unknown or invalid command", Toast.LENGTH_SHORT).show();
             }
 
@@ -141,16 +141,19 @@ public class NewEventCategory extends AppCompatActivity {
     }
 
     public void onClickSaveCategory(View view) {
+        String categoryId = etCategoryId.getText().toString();
         String categoryName = etCategoryNameInput.getText().toString();
         String eventCount = etEventCountInput.getText().toString();
-        boolean isActive = etIsActiveInput.isActivated();
+        boolean isActive = etIsActiveInput.isChecked();
 
         if (!categoryName.isEmpty()) {
-            String categoryId = generateCategoryId();
+            if (categoryId.isEmpty()) {
+                categoryId = generateCategoryId();
+            }
 
-            etCateegoryId.setText(categoryId);
+            etCategoryId.setText(categoryId);
 
-            saveDataToSharedPreference(categoryId, categoryName, eventCount, String.valueOf(isActive));
+            saveDataToSharedPreference(categoryId, categoryName, eventCount, isActive);
         } else {
             Toast.makeText(this, "Unknown or invalid command", Toast.LENGTH_SHORT).show();
         }
@@ -166,7 +169,7 @@ public class NewEventCategory extends AppCompatActivity {
         return categoryId.toUpperCase();
     }
 
-    private void saveDataToSharedPreference(String categoryId, String categoryName, String eventCount, String isActive) {
+    private void saveDataToSharedPreference(String categoryId, String categoryName, String eventCount, boolean isActive) {
         SharedPreferences sharedPreferences = getSharedPreferences(KeyStore.FILE_NAME, MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -174,7 +177,7 @@ public class NewEventCategory extends AppCompatActivity {
         editor.putString(KeyStore.NEW_CATEGORY_CATEGORY_ID, categoryId);
         editor.putString(KeyStore.NEW_CATEGORY_CATEGORY_NAME, categoryName);
         editor.putString(KeyStore.NEW_CATEGORY_EVENT_COUNT, eventCount);
-        editor.putString(KeyStore.NEW_CATEGORY_IS_ACTIVE, isActive);
+        editor.putBoolean(KeyStore.NEW_CATEGORY_IS_ACTIVE, isActive);
 
         editor.apply();
 
