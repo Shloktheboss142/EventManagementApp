@@ -15,11 +15,13 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class UserLogin extends AppCompatActivity {
 
+    // Declare input variables
     EditText etUsernameInput;
     EditText etPasswordInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_user_login);
@@ -29,37 +31,59 @@ public class UserLogin extends AppCompatActivity {
             return insets;
         });
 
+        // Connect the variables to their respective fields
         etUsernameInput = findViewById(R.id.registerUsernameInput);
         etPasswordInput = findViewById(R.id.passwordInput);
 
+        // Get the saved username from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(KeyStore.FILE_NAME, MODE_PRIVATE);
-
         String savedUsername = sharedPreferences.getString(KeyStore.USERNAME, "");
 
+        // Set the retrieved username in the username field
         etUsernameInput.setText(savedUsername);
+
     }
 
+    // Method for when the user clicks the register button
     public void onClickRegister(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
 
+        // Switch to the register activity
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+
     }
 
+    // Method for when the user clicks on the login button
     public void onClickLogin(View view) {
+
+        // Get the text the user has entered in the fields
         String usernameInput = etUsernameInput.getText().toString();
         String passwordInput = etPasswordInput.getText().toString();
 
+        // Initiate a shared preferences object
         SharedPreferences sharedPreferences = getSharedPreferences(KeyStore.FILE_NAME, MODE_PRIVATE);
 
+        // Get the details stored in the shared preferences
         String savedUsername = sharedPreferences.getString(KeyStore.USERNAME, "");
         String savedPassword = sharedPreferences.getString(KeyStore.PASSWORD, "");
 
+        // Check if the username & password are the same as the one stored and are not empty
         if (usernameInput.equals(savedUsername) && passwordInput.equals(savedPassword) && !savedUsername.isEmpty()) {
+
+            // Inform the user using a toast
             Toast.makeText(this, "Login Successfully", Toast.LENGTH_SHORT).show();
+
+            // Switch to the dashboard activity
             Intent intent = new Intent(this, Dashboard.class);
             startActivity(intent);
+
         } else {
+
+            // Give the user an error message in the form of a toast
             Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+
         }
+
     }
+
 }
