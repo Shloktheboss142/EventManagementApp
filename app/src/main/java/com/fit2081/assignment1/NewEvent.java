@@ -32,6 +32,7 @@ public class NewEvent extends AppCompatActivity {
     EditText etTicketsAvailable;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     Switch etIsActiveInput;
+    private SMSReceiver smsReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,8 @@ public class NewEvent extends AppCompatActivity {
         });
 
         ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.SEND_SMS, android.Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS}, 0);
-        registerReceiver(new SMSReceiver(),new IntentFilter("android.provider.Telephony.SMS_RECEIVED"), RECEIVER_EXPORTED);
+        smsReceiver = new SMSReceiver();
+        registerReceiver(smsReceiver,new IntentFilter("android.provider.Telephony.SMS_RECEIVED"), RECEIVER_EXPORTED);
 
         etEventId = findViewById(R.id.eEventIdInput);
         etEventNameInput = findViewById(R.id.eEventNameInput);
@@ -53,6 +55,19 @@ public class NewEvent extends AppCompatActivity {
         etTicketsAvailable = findViewById(R.id.eTicketsAvailableInput);
         etIsActiveInput = findViewById(R.id.eIsActiveInput);
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(smsReceiver);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Register SMSReceiver
+        registerReceiver(smsReceiver, new IntentFilter("android.provider.Telephony.SMS_RECEIVED"), RECEIVER_EXPORTED);
     }
 
     class SMSReceiver extends BroadcastReceiver {
@@ -66,7 +81,7 @@ public class NewEvent extends AppCompatActivity {
 
             boolean check = true;
 
-            String[] newMessage = message.split(":");
+            String[] newMessage = message.split(":",2);
 
             if (!newMessage[0].equals("event")) {
                 check = false;
@@ -154,7 +169,7 @@ public class NewEvent extends AppCompatActivity {
         String eventId = etEventId.getText().toString();
         String eventName = etEventNameInput.getText().toString();
         String categoryId = etCategoryIdInput.getText().toString();
-        String ticketsAvailable = etTicketsAvailable.getText().toString();
+        int ticketsAvailable = Integer.parseInt(etTicketsAvailable.getText().toString());
         boolean isActive = etIsActiveInput.isChecked();
 
         if (!eventName.isEmpty() && !categoryId.isEmpty()) {
@@ -180,7 +195,7 @@ public class NewEvent extends AppCompatActivity {
         return eventId.toUpperCase();
     }
 
-    private void saveDataToSharedPreference(String eventId, String eventName, String categoryId, String ticketsAvailable, boolean isActive) {
+    private void saveDataToSharedPreference(String eventId, String eventName, String categoryId, int ticketsAvailable, boolean isActive) {
         SharedPreferences sharedPreferences = getSharedPreferences(KeyStore.FILE_NAME, MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -188,7 +203,7 @@ public class NewEvent extends AppCompatActivity {
         editor.putString(KeyStore.NEW_EVENT_EVENT_ID, eventId);
         editor.putString(KeyStore.NEW_EVENT_EVENT_NAME, eventName);
         editor.putString(KeyStore.NEW_EVENT_CATEGORY_ID, categoryId);
-        editor.putString(KeyStore.NEW_EVENT_TICKETS_AVAILABLE, ticketsAvailable);
+        editor.putInt(KeyStore.NEW_EVENT_TICKETS_AVAILABLE, ticketsAvailable);
         editor.putBoolean(KeyStore.NEW_EVENT_IS_ACTIVE, isActive);
 
         editor.apply();

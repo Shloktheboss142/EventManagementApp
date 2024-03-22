@@ -31,6 +31,7 @@ public class NewEventCategory extends AppCompatActivity {
     EditText etEventCountInput;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     Switch etIsActiveInput;
+    private SMSReceiver smsReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +45,27 @@ public class NewEventCategory extends AppCompatActivity {
         });
 
         ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.SEND_SMS, android.Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS}, 0);
-        registerReceiver(new SMSReceiver(),new IntentFilter("android.provider.Telephony.SMS_RECEIVED"), RECEIVER_EXPORTED);
+        smsReceiver = new SMSReceiver();
+        registerReceiver(smsReceiver,new IntentFilter("android.provider.Telephony.SMS_RECEIVED"), RECEIVER_EXPORTED);
 
         etCategoryId = findViewById(R.id.cCategoryId);
         etCategoryNameInput = findViewById(R.id.cCategoryNameInput);
         etEventCountInput = findViewById(R.id.cEventCountInput);
         etIsActiveInput = findViewById(R.id.cIsActiveInput);
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(smsReceiver);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Register SMSReceiver
+        registerReceiver(smsReceiver, new IntentFilter("android.provider.Telephony.SMS_RECEIVED"), RECEIVER_EXPORTED);
     }
 
     class SMSReceiver extends BroadcastReceiver {
@@ -64,7 +79,7 @@ public class NewEventCategory extends AppCompatActivity {
 
             boolean check = true;
 
-            String[] newMessage = message.split(":");
+            String[] newMessage = message.split(":", 2);
 
             if (!newMessage[0].equals("category")) {
                 check = false;
@@ -143,7 +158,7 @@ public class NewEventCategory extends AppCompatActivity {
     public void onClickSaveCategory(View view) {
         String categoryId = etCategoryId.getText().toString();
         String categoryName = etCategoryNameInput.getText().toString();
-        String eventCount = etEventCountInput.getText().toString();
+        int eventCount = Integer.parseInt(etEventCountInput.getText().toString());
         boolean isActive = etIsActiveInput.isChecked();
 
         if (!categoryName.isEmpty()) {
@@ -169,14 +184,14 @@ public class NewEventCategory extends AppCompatActivity {
         return categoryId.toUpperCase();
     }
 
-    private void saveDataToSharedPreference(String categoryId, String categoryName, String eventCount, boolean isActive) {
+    private void saveDataToSharedPreference(String categoryId, String categoryName, int eventCount, boolean isActive) {
         SharedPreferences sharedPreferences = getSharedPreferences(KeyStore.FILE_NAME, MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         editor.putString(KeyStore.NEW_CATEGORY_CATEGORY_ID, categoryId);
         editor.putString(KeyStore.NEW_CATEGORY_CATEGORY_NAME, categoryName);
-        editor.putString(KeyStore.NEW_CATEGORY_EVENT_COUNT, eventCount);
+        editor.putInt(KeyStore.NEW_CATEGORY_EVENT_COUNT, eventCount);
         editor.putBoolean(KeyStore.NEW_CATEGORY_IS_ACTIVE, isActive);
 
         editor.apply();

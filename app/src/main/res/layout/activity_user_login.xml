@@ -13,8 +13,10 @@
         android:layout_width="0dp"
         android:layout_height="44dp"
         android:layout_marginTop="8dp"
+        android:backgroundTint="#2A2A2A"
         android:ems="10"
         android:inputType="text"
+        android:textColor="#2A2A2A"
         app:layout_constraintEnd_toStartOf="@+id/guideline14"
         app:layout_constraintStart_toStartOf="@+id/guideline13"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
@@ -24,6 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Login"
+        android:textColor="#2A2A2A"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline12"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,6 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="Password"
+        android:textColor="#2A2A2A"
         app:layout_constraintStart_toStartOf="@+id/guideline13"
         app:layout_constraintTop_toBottomOf="@+id/registerUsernameInput" />
 
@@ -46,6 +50,7 @@
 
         android:layout_marginTop="24dp"
         android:text="Username"
+        android:textColor="#2A2A2A"
         app:layout_constraintStart_toStartOf="@+id/guideline13"
         app:layout_constraintTop_toTopOf="@+id/guideline12" />
 
@@ -57,6 +62,7 @@
         android:backgroundTint="#2A2A2A"
         android:onClick="onClickLogin"
         android:text="Login"
+        android:textColor="#FFFFFF"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/guideline14"
         app:layout_constraintHorizontal_bias="0.5"
@@ -83,8 +89,10 @@
         android:layout_width="0dp"
         android:layout_height="44dp"
         android:layout_marginTop="8dp"
+        android:backgroundTint="#2A2A2A"
         android:ems="10"
         android:inputType="textPassword"
+        android:textColor="#2A2A2A"
         app:layout_constraintEnd_toStartOf="@+id/guideline14"
         app:layout_constraintStart_toStartOf="@+id/guideline13"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
