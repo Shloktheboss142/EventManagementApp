@@ -14,6 +14,7 @@ public class Dashboard extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_dashboard);
@@ -22,17 +23,24 @@ public class Dashboard extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
     }
 
+    // Method for when the user clicks the new event category button
     public void onClickNewEventCategory(View view) {
-        Intent intent = new Intent(this, NewEventCategory.class);
 
+        // Switch the user to the new event category activity
+        Intent intent = new Intent(this, NewEventCategory.class);
         startActivity(intent);
+
     }
 
+    // Method for when the user clicks the new event button
     public void onClickNewEvent(View view) {
-        Intent intent = new Intent(this, NewEvent.class);
 
+        // Switch the user to the acc event activity
+        Intent intent = new Intent(this, NewEvent.class);
         startActivity(intent);
+
     }
 }

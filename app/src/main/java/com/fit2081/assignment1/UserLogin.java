@@ -71,7 +71,7 @@ public class UserLogin extends AppCompatActivity {
         if (usernameInput.equals(savedUsername) && passwordInput.equals(savedPassword) && !savedUsername.isEmpty()) {
 
             // Inform the user using a toast
-            Toast.makeText(this, "Login Successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Logged in successfully", Toast.LENGTH_SHORT).show();
 
             // Switch to the dashboard activity
             Intent intent = new Intent(this, Dashboard.class);

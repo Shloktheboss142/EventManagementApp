@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Apply the changes and send the user a toast
         editor.apply();
-        Toast.makeText(this, "Registered Successfully", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Registered successfully", Toast.LENGTH_SHORT).show();
 
     }
 
