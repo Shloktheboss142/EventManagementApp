@@ -219,6 +219,7 @@ public class NewEventCategory extends AppCompatActivity {
                     Toast.makeText(context, "Unknown or invalid command", Toast.LENGTH_SHORT).show();
 
                 }
+
             } else {
 
                 // Inform the user that the message is invalid through a toast
@@ -267,6 +268,7 @@ public class NewEventCategory extends AppCompatActivity {
             Toast.makeText(this, "Unknown or invalid command", Toast.LENGTH_SHORT).show();
 
         }
+
     }
 
     // Method to generate category ID's
