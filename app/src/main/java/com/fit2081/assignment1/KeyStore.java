@@ -13,4 +13,6 @@ public class KeyStore {
     public static String NEW_EVENT_CATEGORY_ID = "NEW_EVENT_CATEGORY_ID";
     public static String NEW_EVENT_TICKETS_AVAILABLE = "NEW_EVENT_TICKETS_AVAILABLE";
     public static String NEW_EVENT_IS_ACTIVE = "NEW_EVENT_IS_ACTIVE";
+    public static String ALL_EVENT_CATEGORIES = "ALL_EVENT_CATEGORIES";
+    public static String ALL_EVENTS = "ALL_EVENTS";
 }

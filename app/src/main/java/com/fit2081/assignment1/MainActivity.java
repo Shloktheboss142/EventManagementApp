@@ -16,12 +16,17 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     // Declare input variables
     EditText etUsernameInput;
     EditText etPasswordInput;
     EditText etConfirmPasswordInput;
+    Gson gson = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +39,21 @@ public class MainActivity extends AppCompatActivity {
         etUsernameInput = findViewById(R.id.registerUsernameInput);
         etPasswordInput = findViewById(R.id.passwordInput);
         etConfirmPasswordInput = findViewById(R.id.confirmPasswordInput);
+
+        ArrayList<EventItem> allEvents = new ArrayList<>();
+        ArrayList<EventCategoryItem> allCategories = new ArrayList<>();
+        EventCategoryItem categoryRows = new EventCategoryItem("Id", "Name", "Event Count", "Active?");
+
+        allCategories.add(categoryRows);
+
+        String allCategoriesStr = gson.toJson(allCategories);
+        String allEventsStr = gson.toJson(allEvents);
+
+        SharedPreferences sharedPreferences = getSharedPreferences(KeyStore.FILE_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KeyStore.ALL_EVENT_CATEGORIES, allCategoriesStr);
+        editor.putString(KeyStore.ALL_EVENTS, allEventsStr);
+        editor.apply();
 
     }
 

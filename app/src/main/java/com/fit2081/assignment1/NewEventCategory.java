@@ -3,6 +3,7 @@ package com.fit2081.assignment1;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -22,6 +23,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class NewEventCategory extends AppCompatActivity {
@@ -33,6 +39,9 @@ public class NewEventCategory extends AppCompatActivity {
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     Switch etIsActiveInput;
     private SMSReceiver smsReceiver;
+    Gson gson = new Gson();
+
+    Type type = new TypeToken<ArrayList<EventCategoryItem>>() {}.getType();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +67,6 @@ public class NewEventCategory extends AppCompatActivity {
         etCategoryNameInput = findViewById(R.id.cCategoryNameInput);
         etEventCountInput = findViewById(R.id.cEventCountInput);
         etIsActiveInput = findViewById(R.id.cIsActiveInput);
-
     }
 
     // Override the onPause method to unregister the SMSReceiver when the user leaves the activity
@@ -253,22 +261,62 @@ public class NewEventCategory extends AppCompatActivity {
         boolean isActive = etIsActiveInput.isChecked();
 
         // Check if the category name is empty
-        if (!categoryName.isEmpty()) {
+        if (checkCategoryName(categoryName)) {
 
             // Generate a category id and set it into the field
             String categoryId = generateCategoryId();
             etCategoryId.setText(categoryId);
 
             // Save all the data to shared preferences
-            saveDataToSharedPreference(categoryId, categoryName, eventCount, isActive);
+//            saveDataToSharedPreference(categoryId, categoryName, eventCount, isActive);
+
+            EventCategoryItem newData = new EventCategoryItem(categoryId, categoryName, Integer.toString(eventCount), Boolean.toString(isActive));
+
+            SharedPreferences sharedPreferences = getSharedPreferences(KeyStore.FILE_NAME, MODE_PRIVATE);
+            String savedEventCategories = sharedPreferences.getString(KeyStore.ALL_EVENT_CATEGORIES, "");
+            ArrayList<EventCategoryItem> allCategories = gson.fromJson(savedEventCategories,type);
+
+            allCategories.add(newData);
+
+            String allCategoriesStr = gson.toJson(allCategories);
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(KeyStore.ALL_EVENT_CATEGORIES, allCategoriesStr);
+            editor.apply();
+
+            Toast.makeText(this, "Category saved successfully: " + categoryId, Toast.LENGTH_SHORT).show();
+
+            finish();
 
         } else {
 
             // Inform the user that the inputs are invalid through a toast
-            Toast.makeText(this, "Unknown or invalid command", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Invalid category name", Toast.LENGTH_SHORT).show();
 
         }
 
+    }
+
+    public boolean checkCategoryName(String name) {
+        boolean justSpaces = true;
+        if (name.isEmpty()) {
+            return false;
+        }
+        try {
+            String tempName = name.replaceAll("\\s+","");
+            int invalidCategoryName = Integer.parseInt(tempName);
+            return false;
+        } catch (Exception ignored) {}
+        for (char ch : name.toCharArray()) {
+            if ((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z') || (Character.getNumericValue(ch) >= 0 && Character.getNumericValue(ch) <= 9)) {
+                justSpaces = false;
+            } else if (Character.isWhitespace(ch)) {
+                continue;
+            } else {
+                return false;
+            }
+        }
+        return !justSpaces;
     }
 
     // Method to generate category ID's

@@ -44,6 +44,12 @@ public class UserLogin extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        etPasswordInput.setText("");
+    }
+
     // Method for when the user clicks the register button
     public void onClickRegister(View view) {
 
@@ -76,6 +82,8 @@ public class UserLogin extends AppCompatActivity {
             // Switch to the dashboard activity
             Intent intent = new Intent(this, Dashboard.class);
             startActivity(intent);
+
+//            etPasswordInput.setText("");
 
         } else {
 

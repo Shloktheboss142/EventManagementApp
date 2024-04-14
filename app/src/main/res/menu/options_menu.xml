@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/clearEventForm"
+        android:onClick="onOptionsItemSelected"
+        android:title="Clear Event Form" />
+    <item android:id="@+id/deleteAllCategories"
+        android:onClick="onOptionsItemSelected"
+        android:title="Delete All Categories" />
+    <item android:id="@+id/deleteAllEvents"
+        android:onClick="onOptionsItemSelected"
+        android:title="Delete All Events" />
+    <item android:id="@+id/refresh"
+        android:title="Refresh"
+        android:onClick="onOptionsItemSelected"
+        app:showAsAction="always"/>
+</menu>
+
+<!-- we have to explicitly state onOptionsItemSelected for
+each item's onclick   -->
