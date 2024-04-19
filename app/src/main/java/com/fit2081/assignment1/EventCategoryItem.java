@@ -1,5 +1,6 @@
 package com.fit2081.assignment1;
 
+// Object for an event category
 public class EventCategoryItem {
 
     private String categoryId;
@@ -14,14 +15,14 @@ public class EventCategoryItem {
         this.isActive = isActive;
     }
 
+    // Method to increment the event count when a new event is added
     public void incrementCount() {
-        String newCount = Integer.toString(Integer.parseInt(this.eventCount) + 1);
-        this.eventCount = newCount;
+        this.eventCount = Integer.toString(Integer.parseInt(this.eventCount) + 1);
     }
 
+    // Method to decrement the event count when a new event is added
     public void decrementCount() {
-        String newCount = Integer.toString(Integer.parseInt(this.eventCount) - 1);
-        this.eventCount = newCount;
+        this.eventCount = Integer.toString(Integer.parseInt(this.eventCount) - 1);
     }
 
     public String getCategoryId() {

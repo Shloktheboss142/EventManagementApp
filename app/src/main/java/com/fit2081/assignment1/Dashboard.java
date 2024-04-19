@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -39,7 +40,6 @@ public class Dashboard extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
-
     private FloatingActionButton fab;
     FragmentManager fragmentManager;
     FragmentListCategory fragmentListCategory;
@@ -56,7 +56,6 @@ public class Dashboard extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_dashboard);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -64,26 +63,29 @@ public class Dashboard extends AppCompatActivity {
             return insets;
         });
 
+        // Getting the fab and setting a listener for it
         fab = findViewById(R.id.fab);
-
         fab.setOnClickListener(view -> {
             onClickSaveEvent(view);
         });
 
+        // Setting up the toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Setting up the drawer
         drawerLayout = findViewById(R.id.drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
+        // Initialising the fragment
         fragmentManager = getSupportFragmentManager();
         fragmentListCategory = new FragmentListCategory();
-
         fragmentManager.beginTransaction().replace(R.id.fragment1,fragmentListCategory, "MAIN_FRAGMENT").commit();
 
+        // Setting the text variables to their respective fields
         etEventId = findViewById(R.id.eventId);
         etEventNameInput = findViewById(R.id.eventName);
         etCategoryIdInput = findViewById(R.id.categoryIdInput);
@@ -92,23 +94,24 @@ public class Dashboard extends AppCompatActivity {
 
     }
 
+    // NOT USED FOR A2
     // Method for when the user clicks the new event category button
-    public void onClickNewEventCategory(View view) {
-
-        // Switch the user to the new event category activity
-        Intent intent = new Intent(this, NewEventCategory.class);
-        startActivity(intent);
-
-    }
+//    public void onClickNewEventCategory(View view) {
+//
+//        // Switch the user to the new event category activity
+//        Intent intent = new Intent(this, NewEventCategory.class);
+//        startActivity(intent);
+//
+//    }
 
     // Method for when the user clicks the new event button
-    public void onClickNewEvent(View view) {
-
-        // Switch the user to the acc event activity
-        Intent intent = new Intent(this, NewEvent.class);
-        startActivity(intent);
-
-    }
+//    public void onClickNewEvent(View view) {
+//
+//        // Switch the user to the acc event activity
+//        Intent intent = new Intent(this, NewEvent.class);
+//        startActivity(intent);
+//
+//    }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -122,66 +125,81 @@ public class Dashboard extends AppCompatActivity {
         return true;
     }
 
+    // Handle all the different buttons on the toolbar
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
         int id = item.getItemId();
 
         if (id == R.id.clearEventForm) {
             clearForm();
-//            Toast.makeText(this, "Clear Event Form" , Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Successfully cleared form" , Toast.LENGTH_SHORT).show();
         } else if (id == R.id.deleteAllCategories) {
-            ArrayList<EventCategoryItem> allCategories = new ArrayList<>();
-            EventCategoryItem categoryRows = new EventCategoryItem("Id", "Name", "Event Count", "Active?");
-
-            allCategories.add(categoryRows);
-
-            String allCategoriesStr = gson.toJson(allCategories);
-
-            SharedPreferences sharedPreferences = getSharedPreferences(KeyStore.FILE_NAME, MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(KeyStore.ALL_EVENT_CATEGORIES, allCategoriesStr);
-            editor.apply();
-//            Toast.makeText(this, "Delete All Categories" , Toast.LENGTH_SHORT).show();
+            deleteAllCategories();
+            Toast.makeText(this, "Deleted all categories" , Toast.LENGTH_SHORT).show();
         } else if (id == R.id.deleteAllEvents) {
             deleteAllEvents();
-//            Toast.makeText(this, "Delete All Events" , Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Deleted all events" , Toast.LENGTH_SHORT).show();
         } else if (id == R.id.refresh) {
             onRefresh();
-//            Toast.makeText(this, "Refresh" , Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Refreshed successfully" , Toast.LENGTH_SHORT).show();
         } else if (id == R.id.viewAllCategories) {
             Intent intent = new Intent(this, ListCategoryActivity.class);
             startActivity(intent);
             drawerLayout.closeDrawers();
-//            Toast.makeText(this, "View All Categories" , Toast.LENGTH_SHORT).show();
         } else if (id == R.id.addCategory) {
             Intent intent = new Intent(this, NewEventCategory.class);
             startActivity(intent);
             drawerLayout.closeDrawers();
-//            Toast.makeText(this, "Add Category" , Toast.LENGTH_SHORT).show();
         } else if (id == R.id.viewALlEvents) {
             Intent intent = new Intent(this, ListEventActivity.class);
             startActivity(intent);
             drawerLayout.closeDrawers();
-//            Toast.makeText(this, "View All Events" , Toast.LENGTH_SHORT).show();
         } else if (id == R.id.logout) {
             finish();
             drawerLayout.closeDrawers();
-//            Toast.makeText(this, "Logout" , Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Logged out successfully" , Toast.LENGTH_SHORT).show();
         }
 
-        // tell the OS
         return true;
+
     }
 
-    public void deleteAllEvents() {
+    // Method used to clear the form on the dashboard
+    public void clearForm() {
+        etEventId.setText("");
+        etEventNameInput.setText("");
+        etCategoryIdInput.setText("");
+        etTicketsAvailable.setText("");
+        etIsActiveInput.setChecked(false);
+    }
+
+    // Method to delete all categories in the system
+    public void deleteAllCategories() {
+
+        // Logic is to overwrite the data in shared preferences with a new instance of an arraylist
+        ArrayList<EventCategoryItem> allCategories = new ArrayList<>();
+        EventCategoryItem categoryRows = new EventCategoryItem("Id", "Name", "Event Count", "Active?");
+        allCategories.add(categoryRows);
+        String allCategoriesStr = gson.toJson(allCategories);
         SharedPreferences sharedPreferences = getSharedPreferences(KeyStore.FILE_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KeyStore.ALL_EVENT_CATEGORIES, allCategoriesStr);
+        editor.apply();
 
+    }
+
+    // Method used to delete all events in the system
+    public void deleteAllEvents() {
+
+        SharedPreferences sharedPreferences = getSharedPreferences(KeyStore.FILE_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         String savedEventCategories = sharedPreferences.getString(KeyStore.ALL_EVENT_CATEGORIES, "");
         ArrayList<EventCategoryItem> allCategories = gson.fromJson(savedEventCategories,typeC);
         String savedEvents = sharedPreferences.getString(KeyStore.ALL_EVENTS, "");
         ArrayList<EventItem> allEvents = gson.fromJson(savedEvents,typeE);
 
+        // Decrement the event count for each category for which an event exists
         for (EventItem event : allEvents) {
             String EcategoryId = event.getCategoryId();
 
@@ -194,6 +212,7 @@ public class Dashboard extends AppCompatActivity {
             }
         }
 
+        // Overwrite the data in shared preferences with a new instance of arraylist
         ArrayList<EventItem> freshEvents = new ArrayList<>();
         String freshEventsStr = gson.toJson(freshEvents);
         String allCategoriesStr = gson.toJson(allCategories);
@@ -201,30 +220,30 @@ public class Dashboard extends AppCompatActivity {
         editor.putString(KeyStore.ALL_EVENT_CATEGORIES, allCategoriesStr);
         editor.apply();
         onRefresh();
+
     }
 
+    // Method to refresh the categories fragment
     public void onRefresh() {
+
+        // Replace the fragment with a new instance of the same fragment
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         Fragment fragment = getSupportFragmentManager().findFragmentByTag("MAIN_FRAGMENT");
-
-        System.out.println(fragment);
 
         if (fragment != null) {
             transaction.remove(fragment);
             transaction.add(R.id.fragment1, new FragmentListCategory(), "MAIN_FRAGMENT");
             transaction.commit();
         }
+
     }
 
+    // Method to save the event from the details entered int the form
     public void onClickSaveEvent(View view) {
 
-        // Get the entered event name
+        // Get the entered details
         String eventName = etEventNameInput.getText().toString();
-
-        // Get the entered category id
-        String categoryId = etCategoryIdInput.getText().toString();
-
-        // Get the entered tickets available
+        String categoryId = etCategoryIdInput.getText().toString().toUpperCase();
         String ticketsAvailableInput = etTicketsAvailable.getText().toString();
         int ticketsAvailable = 0;
 
@@ -238,33 +257,28 @@ public class Dashboard extends AppCompatActivity {
         // Get the is active switch status
         boolean isActive = etIsActiveInput.isChecked();
 
+        // Calling a check method to validate the event name entered
         boolean checkEvent = checkEventName(eventName);
 
-        // Check if the event name & category id are empty
         if (checkEvent) {
 
-            // Generate a event id and set it into the field
             String eventId = generateEventId();
-
-
             EventItem newData = new EventItem(eventId, eventName, categoryId, Integer.toString(ticketsAvailable), Boolean.toString(isActive));
-
             SharedPreferences sharedPreferences = getSharedPreferences(KeyStore.FILE_NAME, MODE_PRIVATE);
-
             String savedEventCategories = sharedPreferences.getString(KeyStore.ALL_EVENT_CATEGORIES, "");
             ArrayList<EventCategoryItem> allCategories = gson.fromJson(savedEventCategories,typeC);
-
             ArrayList<String> addedCategories = new ArrayList<>();
+
             for (EventCategoryItem item : allCategories) {
                 addedCategories.add(item.getCategoryId());
             }
 
-            if (addedCategories.contains(categoryId) && !categoryId.equals("Id")) {
-                etEventId.setText(eventId);
+            // Check if the category id entered exists
+            if (addedCategories.contains(categoryId)) {
 
+                etEventId.setText(eventId);
                 String savedEvents = sharedPreferences.getString(KeyStore.ALL_EVENTS, "");
                 ArrayList<EventItem> allEvents = gson.fromJson(savedEvents,typeE);
-
                 allEvents.add(newData);
 
                 for (EventCategoryItem item : allCategories) {
@@ -281,42 +295,47 @@ public class Dashboard extends AppCompatActivity {
                 editor.putString(KeyStore.ALL_EVENT_CATEGORIES, allCategoriesStr);
                 editor.apply();
                 String snackBarText = "Event saved: " + eventId + " to " + categoryId;
+
                 Snackbar.make(view, snackBarText, Snackbar.LENGTH_LONG)
-                        .setAction("UNDO", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                undoLastSave();
-                            }
-                        })
+                        .setAction("UNDO", v -> undoLastSave())
                         .setAnchorView(fab)
                         .show();
+
                 onRefresh();
+
             } else {
+
                 Toast.makeText(this, "Category does not exist", Toast.LENGTH_SHORT).show();
+
             }
-
-
 
         } else {
 
-            // Inform the user that the inputs are invalid through a toast
             Toast.makeText(this, "Invalid event name", Toast.LENGTH_SHORT).show();
 
         }
 
     }
 
+    // Method used to check if the event name is valid
     public boolean checkEventName(String name) {
+
         boolean justSpaces = true;
+
         if (name.isEmpty()) {
             return false;
         }
+
         try {
+
             String tempName = name.replaceAll("\\s+","");
             int invalidEventName = Integer.parseInt(tempName);
             return false;
+
         } catch (Exception ignored) {}
+
         for (char ch : name.toCharArray()) {
+
             if ((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z') || (Character.getNumericValue(ch) >= 0 && Character.getNumericValue(ch) <= 9)) {
                 justSpaces = false;
             } else if (Character.isWhitespace(ch)) {
@@ -324,13 +343,18 @@ public class Dashboard extends AppCompatActivity {
             } else {
                 return false;
             }
+
         }
+
         return !justSpaces;
+
     }
 
+    // Method to undo the save
     private void undoLastSave() {
-        SharedPreferences sharedPreferences = getSharedPreferences(KeyStore.FILE_NAME, MODE_PRIVATE);
 
+        // Logic is to remove the last object in the arraylist, as the ordering is preserved
+        SharedPreferences sharedPreferences = getSharedPreferences(KeyStore.FILE_NAME, MODE_PRIVATE);
         String savedEventCategories = sharedPreferences.getString(KeyStore.ALL_EVENT_CATEGORIES, "");
         ArrayList<EventCategoryItem> allCategories = gson.fromJson(savedEventCategories,typeC);
         String savedEvents = sharedPreferences.getString(KeyStore.ALL_EVENTS, "");
@@ -353,6 +377,7 @@ public class Dashboard extends AppCompatActivity {
         editor.putString(KeyStore.ALL_EVENT_CATEGORIES, allCategoriesStr);
         editor.apply();
         onRefresh();
+
     }
 
     // Method to generate event ID's
@@ -364,14 +389,6 @@ public class Dashboard extends AppCompatActivity {
         eventId +=  "-";
         eventId += String.format("%05d", random.nextInt(100000));
         return eventId.toUpperCase();
-    }
-
-    public void clearForm() {
-        etEventId.setText("");
-        etEventNameInput.setText("");
-        etCategoryIdInput.setText("");
-        etTicketsAvailable.setText("");
-        etIsActiveInput.setChecked(false);
     }
 
 }

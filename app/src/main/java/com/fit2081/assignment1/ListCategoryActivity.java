@@ -20,8 +20,8 @@ public class ListCategoryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_list_category);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -29,17 +29,21 @@ public class ListCategoryActivity extends AppCompatActivity {
             return insets;
         });
 
+        // Set the toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Set the fragment
         fragmentManager = getSupportFragmentManager();
         fragmentListCategory = new FragmentListCategory();
-
         fragmentManager.beginTransaction().replace(R.id.fragment,fragmentListCategory).commit();
+
     }
 
+    // Method to handle the back arrow being pressed on the toolbar
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
         int id = item.getItemId();
 
         if (id == android.R.id.home) {

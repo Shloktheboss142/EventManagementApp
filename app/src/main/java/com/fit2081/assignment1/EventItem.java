@@ -1,5 +1,6 @@
 package com.fit2081.assignment1;
 
+// Object for an event
 public class EventItem {
 
     private String eventId;

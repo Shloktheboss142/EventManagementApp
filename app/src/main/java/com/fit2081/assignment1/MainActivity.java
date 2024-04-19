@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         etPasswordInput = findViewById(R.id.passwordInput);
         etConfirmPasswordInput = findViewById(R.id.confirmPasswordInput);
 
+        // Set the default arraylists for categories and events to shared preferences
         ArrayList<EventItem> allEvents = new ArrayList<>();
         ArrayList<EventCategoryItem> allCategories = new ArrayList<>();
         EventCategoryItem categoryRows = new EventCategoryItem("Id", "Name", "Event Count", "Active?");

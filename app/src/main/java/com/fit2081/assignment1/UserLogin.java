@@ -83,8 +83,6 @@ public class UserLogin extends AppCompatActivity {
             Intent intent = new Intent(this, Dashboard.class);
             startActivity(intent);
 
-//            etPasswordInput.setText("");
-
         } else {
 
             // Give the user an error message in the form of a toast
