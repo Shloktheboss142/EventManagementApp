@@ -27,7 +27,7 @@
                 app:layout_anchor="@+id/appBarLayout"
                 app:layout_anchorGravity="center"
                 app:menu="@menu/options_menu"
-                app:title="Assignment 2"
+                app:title="Assignment 3"
                 app:titleTextColor="@color/black" />
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -227,6 +227,26 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_begin="154dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline22"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="535dp" />
+
+            <View
+                android:id="@+id/touchpad"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="#E5E5E5"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guideline22" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.fit2081.assignment1.provider.EMAViewModel;
+import com.fit2081.assignment1.provider.EventCategory;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -26,13 +29,10 @@ public class FragmentListCategory extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private String mParam1;
     private String mParam2;
-    ArrayList<EventCategoryItem> data = new ArrayList<>();
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     EventCategoryAdapter adapter = new EventCategoryAdapter();
-    Gson gson = new Gson();
-    Type type = new TypeToken<ArrayList<EventCategoryItem>>() {}.getType();
-
+    EMAViewModel mEMAViewModel;
 
     public FragmentListCategory() {
         // Required empty public constructor
@@ -68,26 +68,19 @@ public class FragmentListCategory extends Fragment {
 
         View view =  inflater.inflate(R.layout.fragment_list_category, container, false);
 
+        mEMAViewModel = new ViewModelProvider(this).get(EMAViewModel.class);
+        mEMAViewModel.getAllEventCategories().observe(getViewLifecycleOwner(), newData -> {
+            adapter.setData(new ArrayList<>(newData));
+            adapter.notifyDataSetChanged();
+        });
+
         // Get and set the recycler view
         recyclerView = view.findViewById(R.id.category_recycler);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-
-        getDataFromSharedPreferences();
-
-        adapter.setData(data);
         recyclerView.setAdapter(adapter);
 
         return view;
-
-    }
-
-    // Method to get the data from shared preferences
-    public void getDataFromSharedPreferences() {
-
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(KeyStore.FILE_NAME, Context.MODE_PRIVATE);
-        String savedEventCategories = sharedPreferences.getString(KeyStore.ALL_EVENT_CATEGORIES, "");
-        data = gson.fromJson(savedEventCategories,type);
 
     }
 

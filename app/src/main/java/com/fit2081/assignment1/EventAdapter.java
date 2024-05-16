@@ -1,4 +1,5 @@
 package com.fit2081.assignment1;
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,12 +10,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fit2081.assignment1.provider.Event;
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
 
-    ArrayList<EventItem> data = new ArrayList<EventItem>();
-    public void setData(ArrayList<EventItem> data) {
+    ArrayList<Event> data = new ArrayList<Event>();
+    public void setData(ArrayList<Event> data) {
         this.data = data;
     }
 
@@ -44,6 +48,15 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         }
 
         holder.itemView.setBackgroundResource(R.drawable.other_card_background);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), EventGoogleResult.class);
+                intent.putExtra("eventName", data.get(position).getEventName());
+                view.getContext().startActivity(intent);
+            }
+        });
 
     }
 

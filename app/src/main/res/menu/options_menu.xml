@@ -10,10 +10,6 @@
     <item android:id="@+id/deleteAllEvents"
         android:onClick="onOptionsItemSelected"
         android:title="Delete All Events" />
-    <item android:id="@+id/refresh"
-        android:title="Refresh"
-        android:onClick="onOptionsItemSelected"
-        app:showAsAction="always"/>
 </menu>
 
 <!-- we have to explicitly state onOptionsItemSelected for

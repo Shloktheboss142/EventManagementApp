@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.app.ActionBar;
 import android.content.Intent;
@@ -16,9 +17,15 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.fit2081.assignment1.provider.EMAViewModel;
+import com.fit2081.assignment1.provider.Event;
+import com.fit2081.assignment1.provider.EventCategory;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
     EditText etUsernameInput;
     EditText etPasswordInput;
     EditText etConfirmPasswordInput;
-    Gson gson = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,22 +45,6 @@ public class MainActivity extends AppCompatActivity {
         etUsernameInput = findViewById(R.id.registerUsernameInput);
         etPasswordInput = findViewById(R.id.passwordInput);
         etConfirmPasswordInput = findViewById(R.id.confirmPasswordInput);
-
-        // Set the default arraylists for categories and events to shared preferences
-        ArrayList<EventItem> allEvents = new ArrayList<>();
-        ArrayList<EventCategoryItem> allCategories = new ArrayList<>();
-        EventCategoryItem categoryRows = new EventCategoryItem("Id", "Name", "Event Count", "Active?");
-
-        allCategories.add(categoryRows);
-
-        String allCategoriesStr = gson.toJson(allCategories);
-        String allEventsStr = gson.toJson(allEvents);
-
-        SharedPreferences sharedPreferences = getSharedPreferences(KeyStore.FILE_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(KeyStore.ALL_EVENT_CATEGORIES, allCategoriesStr);
-        editor.putString(KeyStore.ALL_EVENTS, allEventsStr);
-        editor.apply();
 
     }
 

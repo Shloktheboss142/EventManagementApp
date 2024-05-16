@@ -1,4 +1,5 @@
 package com.fit2081.assignment1;
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,12 +10,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fit2081.assignment1.provider.EventCategory;
+
 import java.util.ArrayList;
 
 public class EventCategoryAdapter extends RecyclerView.Adapter<EventCategoryAdapter.ViewHolder> {
 
-    ArrayList<EventCategoryItem> data = new ArrayList<EventCategoryItem>();
-    public void setData(ArrayList<EventCategoryItem> data) {
+    ArrayList<EventCategory> data = new ArrayList<EventCategory>();
+    public void setData(ArrayList<EventCategory> data) {
         this.data = data;
     }
 
@@ -44,24 +47,21 @@ public class EventCategoryAdapter extends RecyclerView.Adapter<EventCategoryAdap
             holder.isActiveTv.setText(data.get(position).getIsActive());
         }
 
-        // Format the first card
-        if (data.get(position).getCategoryId().equals("Id")) {
+        // Set the background color
+        holder.itemView.setBackgroundResource(R.drawable.other_card_background);
 
-            holder.itemView.setBackgroundResource(R.drawable.header_card_background);
-            holder.categoryIdTv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            holder.categoryIdTv.setTextColor(Color.WHITE);
-            holder.categoryNameTv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            holder.categoryNameTv.setTextColor(Color.WHITE);
-            holder.eventCountTv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            holder.eventCountTv.setTextColor(Color.WHITE);
-            holder.isActiveTv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            holder.isActiveTv.setTextColor(Color.WHITE);
+        // Set the onClickListener for the card
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-        } else {
+                // Start the GoogleMapActivity and pass the location of the category
+                Intent intent = new Intent(view.getContext(), GoogleMapActivity.class);
+                intent.putExtra("categoryLocation", data.get(position).getEventLocation());
+                view.getContext().startActivity(intent);
 
-            holder.itemView.setBackgroundResource(R.drawable.other_card_background);
-
-        }
+            }
+        });
 
     }
 

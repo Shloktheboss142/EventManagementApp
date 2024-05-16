@@ -22,7 +22,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.fit2081.assignment1.provider.EMAViewModel;
+import com.fit2081.assignment1.provider.EventCategory;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -38,10 +41,9 @@ public class NewEventCategory extends AppCompatActivity {
     EditText etEventCountInput;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     Switch etIsActiveInput;
+    EditText etLocationInput;
     private SMSReceiver smsReceiver;
-    Gson gson = new Gson();
-
-    Type type = new TypeToken<ArrayList<EventCategoryItem>>() {}.getType();
+    EMAViewModel mEMAViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,9 @@ public class NewEventCategory extends AppCompatActivity {
         etCategoryNameInput = findViewById(R.id.cCategoryNameInput);
         etEventCountInput = findViewById(R.id.cEventCountInput);
         etIsActiveInput = findViewById(R.id.cIsActiveInput);
+        etLocationInput = findViewById(R.id.eventLocation);
+
+        mEMAViewModel = new ViewModelProvider(this).get(EMAViewModel.class);
     }
 
     // Override the onPause method to unregister the SMSReceiver when the user leaves the activity
@@ -248,6 +253,8 @@ public class NewEventCategory extends AppCompatActivity {
         // Get the entered event count input
         String eventCountInput = etEventCountInput.getText().toString();
 
+        String locationName = etLocationInput.getText().toString();
+
         int eventCount = 0;
 
         // Try convert the event count input to an integer
@@ -267,22 +274,8 @@ public class NewEventCategory extends AppCompatActivity {
             String categoryId = generateCategoryId();
             etCategoryId.setText(categoryId);
 
-            // Save all the data to shared preferences
-//            saveDataToSharedPreference(categoryId, categoryName, eventCount, isActive);
-
-            EventCategoryItem newData = new EventCategoryItem(categoryId, categoryName, Integer.toString(eventCount), Boolean.toString(isActive));
-
-            SharedPreferences sharedPreferences = getSharedPreferences(KeyStore.FILE_NAME, MODE_PRIVATE);
-            String savedEventCategories = sharedPreferences.getString(KeyStore.ALL_EVENT_CATEGORIES, "");
-            ArrayList<EventCategoryItem> allCategories = gson.fromJson(savedEventCategories,type);
-
-            allCategories.add(newData);
-
-            String allCategoriesStr = gson.toJson(allCategories);
-
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(KeyStore.ALL_EVENT_CATEGORIES, allCategoriesStr);
-            editor.apply();
+            EventCategory Test = new EventCategory(categoryId, categoryName, Integer.toString(eventCount), Boolean.toString(isActive), locationName);
+            mEMAViewModel.insert(Test);
 
             Toast.makeText(this, "Category saved successfully: " + categoryId, Toast.LENGTH_SHORT).show();
 
@@ -328,26 +321,6 @@ public class NewEventCategory extends AppCompatActivity {
         categoryId +=  "-";
         categoryId += String.format("%04d", random.nextInt(10000));
         return categoryId.toUpperCase();
-    }
-
-    // Method to save data to shared preferences
-    private void saveDataToSharedPreference(String categoryId, String categoryName, int eventCount, boolean isActive) {
-
-        // Instantiate a shared preferences object
-        SharedPreferences sharedPreferences = getSharedPreferences(KeyStore.FILE_NAME, MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        // Assign the data to respective keys
-        editor.putString(KeyStore.NEW_CATEGORY_CATEGORY_ID, categoryId);
-        editor.putString(KeyStore.NEW_CATEGORY_CATEGORY_NAME, categoryName);
-        editor.putInt(KeyStore.NEW_CATEGORY_EVENT_COUNT, eventCount);
-        editor.putBoolean(KeyStore.NEW_CATEGORY_IS_ACTIVE, isActive);
-
-        editor.apply();
-
-        // Inform the user that the category has successfully be saved through a toast
-        Toast.makeText(this, "Category saved successfully: " + categoryId, Toast.LENGTH_SHORT).show();
     }
 
 }
